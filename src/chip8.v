@@ -92,6 +92,7 @@ module Chip8(
     assign LED17_R = ERR;
     assign LED16_R = ERR;
 
+    reg [5:0] clk_ctr = 0;
     reg Chip8CLK = 0;
     wire [15:0] user_inputs;
     InputPulse in_pulser (
@@ -124,7 +125,7 @@ module Chip8(
         .write_buffer(write_in),
         .address(i_reg),
         .pc(program_counter),
-        .address_counter(clk_ctr[3:0]),
+        .address_counter(clk_ctr),
         .read_buffer(read_out),
         .opcode(current_opcode));
 
@@ -305,7 +306,6 @@ module Chip8(
     reg vid_clear = 0;
     reg vid_write = 0;
     reg [3:0] sprite_height = 0;
-    reg [5:0] clk_ctr = 0;
     reg [3:0] vid_counter = 0;
     reg write_begin = 0;
     reg write_finish = 0;
@@ -372,11 +372,17 @@ module Chip8(
                 which_rom <= 3;
             else if (BTNC)
                 which_rom <= 4;
+            else
+                which_rom <= which_rom;
+
+            i_reg <= 0;
             loading <= 1;
             program_counter <= 12'h200;
             write_enable <= 1;
             rom_index <= 0;
             vid_clear <= 1;
+            write_count <= 15;
+
             write_buffer[0] <= 0;
             write_buffer[1] <= 0;
             write_buffer[2] <= 0;
@@ -531,10 +537,6 @@ module Chip8(
                         end
                     endcase
                     program_counter <= program_counter + 2;
-                    //registers[rx_sel] <= alu_out;
-                    //if (current_opcode[2:0] == 3'b110)
-                    //    registers[ry_sel] <= alu_out;
-                    //registers[15] <= { 7'h0, alu_carry };
                 end
                 9: begin
                     if (registers[rx_sel] != registers[ry_sel])

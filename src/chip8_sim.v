@@ -5,6 +5,9 @@ module chip8_sim (
     reg clk = 0;
     reg BTNR = 0;
     reg BTNL = 0;
+    reg BTNU = 0;
+    reg BTND = 0;
+    reg BTNC = 0;
     reg [15:0] inputs = 0;
 
     wire [15:0] LED;
@@ -26,41 +29,41 @@ module chip8_sim (
     wire [127:0] readout;
     wire [7:0] mem_read [0:15];
     wire [0:2047] flat_video_memory;
-    wire [0:63] video_memory [0:31];
+    wire [0:70] video_memory [0:31];
     wire vidclear;
 
-    assign video_memory[0] = flat_video_memory[0:63];
-    assign video_memory[1] = flat_video_memory[64:127];
-    assign video_memory[2] = flat_video_memory[128:191];
-    assign video_memory[3] = flat_video_memory[192:255];
-    assign video_memory[4] = flat_video_memory[256:319];
-    assign video_memory[5] = flat_video_memory[320:383];
-    assign video_memory[6] = flat_video_memory[384:447];
-    assign video_memory[7] = flat_video_memory[448:511];
-    assign video_memory[8] = flat_video_memory[512:575];
-    assign video_memory[9] = flat_video_memory[576:639];
-    assign video_memory[10] = flat_video_memory[640:703];
-    assign video_memory[11] = flat_video_memory[704:767];
-    assign video_memory[12] = flat_video_memory[768:831];
-    assign video_memory[13] = flat_video_memory[832:895];
-    assign video_memory[14] = flat_video_memory[896:959];
-    assign video_memory[15] = flat_video_memory[960:1023];
-    assign video_memory[16] = flat_video_memory[1024:1087];
-    assign video_memory[17] = flat_video_memory[1088:1151];
-    assign video_memory[18] = flat_video_memory[1152:1215];
-    assign video_memory[19] = flat_video_memory[1216:1279];
-    assign video_memory[20] = flat_video_memory[1280:1343];
-    assign video_memory[21] = flat_video_memory[1344:1407];
-    assign video_memory[22] = flat_video_memory[1408:1471];
-    assign video_memory[23] = flat_video_memory[1472:1535];
-    assign video_memory[24] = flat_video_memory[1536:1599];
-    assign video_memory[25] = flat_video_memory[1600:1663];
-    assign video_memory[26] = flat_video_memory[1664:1727];
-    assign video_memory[27] = flat_video_memory[1728:1791];
-    assign video_memory[28] = flat_video_memory[1792:1855];
-    assign video_memory[29] = flat_video_memory[1856:1919];
-    assign video_memory[30] = flat_video_memory[1920:1983];
-    assign video_memory[31] = flat_video_memory[1984:2047];
+    assign video_memory[0][0:63] = flat_video_memory[0:63];
+    assign video_memory[1][0:63] = flat_video_memory[64:127];
+    assign video_memory[2][0:63] = flat_video_memory[128:191];
+    assign video_memory[3][0:63] = flat_video_memory[192:255];
+    assign video_memory[4][0:63] = flat_video_memory[256:319];
+    assign video_memory[5][0:63] = flat_video_memory[320:383];
+    assign video_memory[6][0:63] = flat_video_memory[384:447];
+    assign video_memory[7][0:63] = flat_video_memory[448:511];
+    assign video_memory[8][0:63] = flat_video_memory[512:575];
+    assign video_memory[9][0:63] = flat_video_memory[576:639];
+    assign video_memory[10][0:63] = flat_video_memory[640:703];
+    assign video_memory[11][0:63] = flat_video_memory[704:767];
+    assign video_memory[12][0:63] = flat_video_memory[768:831];
+    assign video_memory[13][0:63] = flat_video_memory[832:895];
+    assign video_memory[14][0:63] = flat_video_memory[896:959];
+    assign video_memory[15][0:63] = flat_video_memory[960:1023];
+    assign video_memory[16][0:63] = flat_video_memory[1024:1087];
+    assign video_memory[17][0:63] = flat_video_memory[1088:1151];
+    assign video_memory[18][0:63] = flat_video_memory[1152:1215];
+    assign video_memory[19][0:63] = flat_video_memory[1216:1279];
+    assign video_memory[20][0:63] = flat_video_memory[1280:1343];
+    assign video_memory[21][0:63] = flat_video_memory[1344:1407];
+    assign video_memory[22][0:63] = flat_video_memory[1408:1471];
+    assign video_memory[23][0:63] = flat_video_memory[1472:1535];
+    assign video_memory[24][0:63] = flat_video_memory[1536:1599];
+    assign video_memory[25][0:63] = flat_video_memory[1600:1663];
+    assign video_memory[26][0:63] = flat_video_memory[1664:1727];
+    assign video_memory[27][0:63] = flat_video_memory[1728:1791];
+    assign video_memory[28][0:63] = flat_video_memory[1792:1855];
+    assign video_memory[29][0:63] = flat_video_memory[1856:1919];
+    assign video_memory[30][0:63] = flat_video_memory[1920:1983];
+    assign video_memory[31][0:63] = flat_video_memory[1984:2047];
 
     assign registers[0] = regs[7:0];
     assign registers[1] = regs[15:8];
@@ -100,6 +103,9 @@ module chip8_sim (
         .SYS_CLK(clk),
         .BTNR(BTNR),
         .BTNL(BTNL),
+        .BTNU(BTNU),
+        .BTND(BTND),
+        .BTNC(BTNC),
         .SW(inputs),
         .LED(LED),
         .VGA_HS(VGA_HS),
@@ -124,8 +130,8 @@ module chip8_sim (
     end
 
     initial begin
-        #400 BTNR = 1;
-        #4000 BTNR = 0;
+        #40000 BTND = 1;
+        #4000 BTND = 0;
         #500000000;
         $finish;
     end

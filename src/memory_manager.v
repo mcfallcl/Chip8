@@ -7,7 +7,7 @@ module MemoryManager (
     input [127:0] write_buffer,
     input [11:0] address,
     input [11:0] pc,
-    input [3:0] address_counter,
+    input [5:0] address_counter,
     output [127:0] read_buffer,
     output reg [15:0] opcode);
 
@@ -51,19 +51,24 @@ module MemoryManager (
     assign write[14] = write_buffer[119:112];
     assign write[15] = write_buffer[127:120];
 
-    wire [11:0] a;
-    assign a = address + address_counter;
+    reg [11:0] a = 0;
+    //assign a = address + address_counter[3:0];
 
     wire[7:0] dpo;
     wire[11:0] program_counter;
     assign program_counter = pc + address_counter[0];
+
+    wire we;
+    wire write_valid;
+    assign we = write_enable && write_valid;
+    assign write_valid = (address_counter[3:0] <= write_count) && (address_counter < 16);
 
     dist_mem_gen_0 main_memory (
         .a(a),
         .d(write_data),
         .dpra(program_counter),
         .clk(clk),
-        .we(write_enable),
+        .we(we),
         .spo(read_data),
         .dpo(dpo));
 
@@ -81,20 +86,19 @@ module MemoryManager (
     //    .dinb(0),
     //    .doutb(dpo));
 
+    wire [3:0] mem_offset;
+    assign mem_offset = address_counter[3:0] - 1;
     always @(posedge clk) begin
         //address_offset = address_counter - 2;
-        read[address_counter] <= read_data;
+        read[mem_offset] <= read_data;
+        a <= address + address_counter[3:0];
 
         if (address_counter[0])
             opcode[7:0] <= dpo;
         else
             opcode[15:8] <= dpo;
 
-        if (write_enable) begin
-            if (address_counter <= write_count) begin
-                write_data <= write[address_counter];
-            end
-        end
+        write_data <= write[address_counter[3:0]];
     end
 
 endmodule

@@ -1,0 +1,7 @@
+*
+
+!src/*
+!c8games/*
+!.gitignore
+
+!*/

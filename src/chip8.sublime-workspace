@@ -1,0 +1,267 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"poly",
+				"poly_sum_loop"
+			],
+			[
+				"pow",
+				"pow_loop"
+			],
+			[
+				"min",
+				"minimum"
+			],
+			[
+				"prod",
+				"prod_a"
+			],
+			[
+				"pro",
+				"product"
+			],
+			[
+				"sum",
+				"sum_loop"
+			],
+			[
+				"va",
+				"var_value"
+			],
+			[
+				"v",
+				"var_value"
+			],
+			[
+				"arr",
+				"array"
+			],
+			[
+				"po",
+				"abs_polynomial"
+			],
+			[
+				"abs",
+				"abs_value"
+			],
+			[
+				"array",
+				"array_len"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 385.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Snippet: ",
+				"Snippet: always"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: li",
+				"Package Control: List Packages"
+			]
+		],
+		"width": 508.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/mcfal/Dropbox/School/Fall2017/CEC330L/chip8/src"
+	],
+	"file_history":
+	[
+		"/C/Users/mcfal/Code/Quiz6_asm/mcfall_christopher_QZ6.s",
+		"/C/Users/mcfal/Code/Quiz6_c/mcfall_christopher_QZ6.c",
+		"/C/Users/mcfal/Code/Quiz5asm/mcfall_christopher_QZ5.s",
+		"/C/Users/mcfal/Downloads/Chuit_Src/Main.cpp",
+		"/C/Users/mcfal/Downloads/Chuit_Src/Opcodes.cpp",
+		"/C/Users/mcfal/Downloads/Chuit_Src/Opcodes.h",
+		"/C/Users/mcfal/Downloads/c8games/INVADERS",
+		"/C/Users/mcfal/Code/STM32l476xx/stm32l476xx.h",
+		"/C/Users/mcfal/Code/STM32l476xx/startup_stm32l476xx.s",
+		"/C/Users/mcfal/Dropbox/School/Fall2017/CEC330L/chip8/src/alu.v",
+		"/C/Users/mcfal/Dropbox/School/Fall2017/CEC330L/chip8/src/timer.v",
+		"/C/Users/mcfal/Dropbox/School/Fall2017/CEC330L/chip8/src/alu_sim.v",
+		"/C/Users/mcfal/Google Drive/School/Fall 2017/CEC322/lab3/main.c",
+		"/C/Users/mcfal/Google Drive/School/Fall 2017/CEC322/lab3/startup_stm32l476xx.s",
+		"/C/Users/mcfal/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/mcfal/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 66.0
+	},
+	"input":
+	{
+		"height": 54.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "chip8.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 1,
+	"settings":
+	{
+		"_vintageous_last_buffer_search": "result",
+		"_vintageous_last_buffer_search_command": "vi_slash",
+		"_vintageous_reset_during_init": true,
+		"vintage":
+		{
+			"_cmdline_cd": "C:\\Users\\mcfal\\Downloads\\Chuit_Src"
+		}
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

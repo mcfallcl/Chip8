@@ -71,6 +71,13 @@ module Chip8(
     assign LED17_R = ERR;
     assign LED16_R = ERR;
 
+    reg Chip8CLK = 0;
+    wire [15:0] user_inputs;
+    InputPulse in_pulser (
+        .clk(Chip8CLK),
+        .in(SW),
+        .out(user_inputs));
+
     wire [15:0] current_opcode;
     reg [7:0] registers [0:15];
     // programs always start at 0x200 in memory.
@@ -212,7 +219,7 @@ module Chip8(
     wire [3:0] key_code;
     InputHandler input_handler (
         .clk(SYS_CLK),
-        .inputs(SW),
+        .inputs(user_inputs),
         .key_pressed(key_pressed),
         .key_code(key_code));
 
@@ -278,7 +285,6 @@ module Chip8(
     reg vid_write = 0;
     reg [3:0] sprite_height = 0;
     reg [5:0] clk_ctr = 0;
-    reg Chip8CLK = 0;
     reg [3:0] vid_counter = 0;
     reg write_begin = 0;
     reg write_finish = 0;
@@ -324,8 +330,8 @@ module Chip8(
             video_memory[31] <= 0;
         end
         else if (vid_write && clk_ctr > 15 && clk_ctr < 32) begin
-            if (clk_ctr[3:0] < sprite_height) begin
-                video_memory[y_coords + clk_ctr[3:0]][x_coords +: 8] <= read_buffer[clk_ctr[3:0]];
+            if (clk_ctr[3:0] < sprite_height && !Chip8CLK) begin
+                video_memory[y_coords + clk_ctr[3:0]][x_coords +: 8] <= read_buffer[clk_ctr[3:0]] ^ video_memory[y_coords + clk_ctr[3:0]][x_coords +: 8];
             end
         end
     end

@@ -3,6 +3,9 @@ module Chip8(
     input SYS_CLK,
     input BTNR,
     input BTNL,
+    input BTNU,
+    input BTND,
+    input BTNC,
     input [15:0] SW,
     output [15:0] LED,
     output VGA_HS,
@@ -52,7 +55,7 @@ module Chip8(
     reg [11:0] rom_index = 0;
     wire [7:0] rom_data;
 
-    reg [1:0] which_rom = 0;
+    reg [2:0] which_rom = 0;
 
     wire [7:0] guess_data;
     GUESS guess_rom (
@@ -64,8 +67,26 @@ module Chip8(
         .a(rom_index),
         .spo(c4_data));
 
+    wire [7:0] tictac_data;
+    TICTAC tictac_rom (
+        .a(rom_index),
+        .spo(tictac_data));
+
+    wire [7:0] puzzle_data;
+    PUZZLE puzzle_rom (
+        .a(rom_index),
+        .spo(puzzle_data));
+
+    wire [7:0] puzzle15_data;
+    PUZZLE15 puzzle15_rom (
+        .a(rom_index),
+        .spo(puzzle15_data));
+
     assign rom_data = (which_rom == 0) ? guess_data :
-                       (which_rom == 1) ? c4_data : 0;
+                      (which_rom == 1) ? c4_data :
+                      (which_rom == 2) ? puzzle_data :
+                      (which_rom == 3) ? puzzle15_data :
+                      (which_rom == 4) ? tictac_data : 0;
 
     reg ERR = 0;
     assign LED17_R = ERR;
@@ -338,13 +359,19 @@ module Chip8(
 
 
     always @(posedge Chip8CLK) begin
-        start_loading <= (BTNR || BTNL);
+        start_loading <= (BTNR || BTNL || BTNC || BTNU || BTND);
         old_loading <= start_loading;
         if (start_loading && !old_loading) begin
             if (BTNL)
                 which_rom <= 1;
             else if (BTNR)
                 which_rom <= 0;
+            else if (BTNU)
+                which_rom <= 2;
+            else if (BTND)
+                which_rom <= 3;
+            else if (BTNC)
+                which_rom <= 4;
             loading <= 1;
             program_counter <= 12'h200;
             write_enable <= 1;

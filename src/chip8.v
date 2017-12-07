@@ -77,15 +77,15 @@ module Chip8(
         .a(rom_index),
         .spo(puzzle_data));
 
-    wire [7:0] puzzle15_data;
-    PUZZLE15 puzzle15_rom (
+    wire [7:0] maze_data;
+    dist_mem_gen_1 maze (
         .a(rom_index),
-        .spo(puzzle15_data));
+        .spo(maze_data));
 
     assign rom_data = (which_rom == 0) ? guess_data :
                       (which_rom == 1) ? c4_data :
                       (which_rom == 2) ? puzzle_data :
-                      (which_rom == 3) ? puzzle15_data :
+                      (which_rom == 3) ? maze_data :
                       (which_rom == 4) ? tictac_data : 0;
 
     reg ERR = 0;
@@ -552,7 +552,7 @@ module Chip8(
                     program_counter <= registers[0] + op_const;
                 end
                 12: begin
-                    registers[rx_sel] <= random_number & op_const;
+                    registers[rx_sel] <= (random_number & op_const);
                     program_counter <= program_counter + 2;
                 end
                 13: begin

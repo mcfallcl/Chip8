@@ -1,3 +1,4 @@
+// Displays a 64x32 pixel memory onto a 640x480 VGA display
 
 module Display (
     input SYS_CLK,
@@ -9,7 +10,7 @@ module Display (
     output [3:0] VGA_B);
 
     reg VIDACT = 0;
-    reg display;
+    reg display = 0;
 
     assign VGA_R[3] = display;
     assign VGA_R[2] = display;
@@ -116,15 +117,6 @@ module Display (
 
     end
 
-    //always @(posedge clk25MHz) begin
-    //    if (hcount == hpixel_end) begin
-    //        if (vcount == vline_end)
-    //            vcount <= 0;
-    //        else
-    //            vcount <= vcount + 1;
-    //    end
-    //end
-
     always @(posedge SYS_CLK) begin
         VGA_HS <= (hcount > hsync_end);
         VGA_VS <= (vcount > vsync_end);
@@ -132,12 +124,8 @@ module Display (
                 && ((vcount >= vdat_begin) && (vcount < vdat_end));
 
         if (VIDACT) begin
-        //    v_index <= (v_vid_counter / 10);
-        //    h_index <= (h_vid_counter / 10);
             display <= video_memory[v_index][h_index];
         end else begin
-        //    v_index <= 0;
-        //    h_index <= 0;
             display <= 0;
         end
     end

@@ -1,4 +1,4 @@
-
+// converts switch inputs into what Chip-8 expects.
 
 module InputHandler (
     input clk,

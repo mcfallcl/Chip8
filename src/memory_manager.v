@@ -7,6 +7,7 @@ module MemoryManager (
     input [127:0] write_buffer,
     input [11:0] address,
     input [11:0] pc,
+    // TODO determine if bits 5 and 4 are needed
     input [5:0] address_counter,
     output [127:0] read_buffer,
     output reg [15:0] opcode);
@@ -14,9 +15,13 @@ module MemoryManager (
     reg [7:0] write_data = 0;
     wire [7:0] read_data;
 
+    // read buffer, stores data from address to address+15
     reg [7:0] read [15:0];
+    // write buffer, writes data to address to address + write_count
+    // BUG corrupts all RAM from address to address+15
     wire [7:0] write [15:0];
 
+    // flatten and unflatten arrays for passing through inputs and outputs
     assign read_buffer[127:120] = read[15];
     assign read_buffer[119:112] = read[14];
     assign read_buffer[111:104] = read[13];
@@ -51,17 +56,22 @@ module MemoryManager (
     assign write[14] = write_buffer[119:112];
     assign write[15] = write_buffer[127:120];
 
+    // actual read/write address to memory
     reg [11:0] a = 0;
-    //assign a = address + address_counter[3:0];
 
+    // pc pointer output
     wire[7:0] dpo;
     wire[11:0] program_counter;
+    // stores 8-bit datas into parts of 16-bit opcode
     assign program_counter = pc + address_counter[0];
 
+    // write enable for memory
     wire we;
+    // should determine validity of write
     wire write_valid;
-    assign we = write_enable && write_valid;
     assign write_valid = (address_counter[3:0] <= write_count) && (address_counter < 16);
+    // if write is valid and enabled, allow memory to write.
+    assign we = write_enable && write_valid;
 
     dist_mem_gen_0 main_memory (
         .a(a),
@@ -72,20 +82,8 @@ module MemoryManager (
         .spo(read_data),
         .dpo(dpo));
 
-    //blk_mem_gen_0 main_memory (
-    //    .clka(clk),
-    //    .ena(1),
-    //    .wea(write_enable),
-    //    .addra(a),
-    //    .dina(write_data),
-    //    .douta(read_data),
-    //    .clkb(clk),
-    //    .enb(1),
-    //    .web(0),
-    //    .addrb(program_counter),
-    //    .dinb(0),
-    //    .doutb(dpo));
-
+    // Ensures read data is where it is expected to be in the buffer
+    // BUG write data is still off
     wire [3:0] mem_offset;
     assign mem_offset = address_counter[3:0] - 1;
     always @(posedge clk) begin

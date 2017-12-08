@@ -1,24 +1,4 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company:
-// Engineer:
-//
-// Create Date: 11/18/2017 11:35:58 AM
-// Design Name:
-// Module Name: opcode_decoder
-// Project Name:
-// Target Devices:
-// Tool Versions:
-// Description:
-//
-// Dependencies:
-//
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-//
-//////////////////////////////////////////////////////////////////////////////////
-
+// Breaks a 16-bit opcode into its various logical pieces
 
 module OpcodeDecoder (
     input [15:0] opcode,

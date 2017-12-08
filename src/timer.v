@@ -1,5 +1,5 @@
 /*
- *
+ * 60hz countdown timer used by the Chip-8 for delays and audio beeps
  */
 
 module Timer (

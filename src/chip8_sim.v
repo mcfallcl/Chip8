@@ -130,8 +130,8 @@ module chip8_sim (
     end
 
     initial begin
-        #40000 BTND = 1;
-        #4000 BTND = 0;
+        #40000 BTNR = 1;
+        #4000 BTNR = 0;
         #500000000;
         $finish;
     end

@@ -1,4 +1,4 @@
-
+// Changes switches to act as button presses
 
 module InputPulse (
     input clk,

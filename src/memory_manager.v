@@ -12,7 +12,6 @@ module MemoryManager (
     output [127:0] read_buffer,
     output reg [15:0] opcode);
 
-    reg [7:0] write_data = 0;
     wire [7:0] read_data;
 
     // read buffer, stores data from address to address+15
@@ -57,7 +56,12 @@ module MemoryManager (
     assign write[15] = write_buffer[127:120];
 
     // actual read/write address to memory
-    reg [11:0] a = 0;
+    wire [11:0] a;
+    assign a = address + address_counter[3:0];
+
+    // data to be written to RAM
+    wire [7:0] write_data;
+    assign write_data = write[address_counter[3:0]];
 
     // pc pointer output
     wire[7:0] dpo;
@@ -65,13 +69,13 @@ module MemoryManager (
     // stores 8-bit datas into parts of 16-bit opcode
     assign program_counter = pc + address_counter[0];
 
+    // a window of when writes are good
+    wire write_window;
+    assign write_window = (address_counter[5:4] == 2'b01);
     // write enable for memory
     wire we;
-    // should determine validity of write
-    wire write_valid;
-    assign write_valid = (address_counter[3:0] <= write_count) && (address_counter < 16);
     // if write is valid and enabled, allow memory to write.
-    assign we = write_enable && write_valid;
+    assign we = (address_counter[3:0] <= write_count) && write_enable && write_window;
 
     dist_mem_gen_0 main_memory (
         .a(a),
@@ -82,21 +86,15 @@ module MemoryManager (
         .spo(read_data),
         .dpo(dpo));
 
-    // Ensures read data is where it is expected to be in the buffer
-    // BUG write data is still off
-    wire [3:0] mem_offset;
-    assign mem_offset = address_counter[3:0] - 1;
     always @(posedge clk) begin
-        //address_offset = address_counter - 2;
-        read[mem_offset] <= read_data;
-        a <= address + address_counter[3:0];
+        if (!we) begin
+            read[address_counter[3:0]] <= read_data;
+        end
 
         if (address_counter[0])
             opcode[7:0] <= dpo;
         else
             opcode[15:8] <= dpo;
-
-        write_data <= write[address_counter[3:0]];
     end
 
 endmodule

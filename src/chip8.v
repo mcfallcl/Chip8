@@ -842,22 +842,22 @@ module Chip8(
                             // BUG most writes still write erroneous data, this
                             // is the only setup that allows ROMs to be loaded
                             // correctly
-                            if (rx_sel >= 0) write_buffer[rx_sel] <= registers[0];
-                            if (rx_sel >= 1) write_buffer[0] <= registers[1];
-                            if (rx_sel >= 2) write_buffer[1] <= registers[2];
-                            if (rx_sel >= 3) write_buffer[2] <= registers[3];
-                            if (rx_sel >= 4) write_buffer[3] <= registers[4];
-                            if (rx_sel >= 5) write_buffer[4] <= registers[5];
-                            if (rx_sel >= 6) write_buffer[5] <= registers[6];
-                            if (rx_sel >= 7) write_buffer[6] <= registers[7];
-                            if (rx_sel >= 8) write_buffer[7] <= registers[8];
-                            if (rx_sel >= 9) write_buffer[8] <= registers[9];
-                            if (rx_sel >= 10) write_buffer[9] <= registers[10];
-                            if (rx_sel >= 11) write_buffer[10] <= registers[11];
-                            if (rx_sel >= 12) write_buffer[11] <= registers[12];
-                            if (rx_sel >= 13) write_buffer[12] <= registers[13];
-                            if (rx_sel >= 14) write_buffer[13] <= registers[14];
-                            if (rx_sel >= 15) write_buffer[14] <= registers[15];
+                            if (rx_sel >= 0) write_buffer[0] <= registers[0];
+                            if (rx_sel >= 1) write_buffer[1] <= registers[1];
+                            if (rx_sel >= 2) write_buffer[2] <= registers[2];
+                            if (rx_sel >= 3) write_buffer[3] <= registers[3];
+                            if (rx_sel >= 4) write_buffer[4] <= registers[4];
+                            if (rx_sel >= 5) write_buffer[5] <= registers[5];
+                            if (rx_sel >= 6) write_buffer[6] <= registers[6];
+                            if (rx_sel >= 7) write_buffer[7] <= registers[7];
+                            if (rx_sel >= 8) write_buffer[8] <= registers[8];
+                            if (rx_sel >= 9) write_buffer[9] <= registers[9];
+                            if (rx_sel >= 10) write_buffer[10] <= registers[10];
+                            if (rx_sel >= 11) write_buffer[11] <= registers[11];
+                            if (rx_sel >= 12) write_buffer[12] <= registers[12];
+                            if (rx_sel >= 13) write_buffer[13] <= registers[13];
+                            if (rx_sel >= 14) write_buffer[14] <= registers[14];
+                            if (rx_sel >= 15) write_buffer[15] <= registers[15];
                             program_counter <= program_counter + 2;
                         end
                         8'h65: begin    // reads memory starting from i_reg to

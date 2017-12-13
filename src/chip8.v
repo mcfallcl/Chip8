@@ -527,7 +527,7 @@ module Chip8(
 
             // Blocking to keep new opcodes from writting random data.
             // NOTE look into changing when memory handling is changed
-            write_enable = 0;
+            write_enable <= 0;
             if (audio_set)
                 audio_set <= 0;
 
@@ -653,8 +653,6 @@ module Chip8(
                     registers[rx_sel] <= (random_number & op_const);
                     program_counter <= program_counter + 2;
                 end
-                // The huge commented block is the section of code that was
-                // causing 171% of the LUTs to be used.
                 13: begin   // draw sprite at (rX, rY) with height n. sprites
                             // read from memory starting at i_reg. pixel written
                             // from top to bottom
@@ -663,96 +661,6 @@ module Chip8(
                     x_coords <= registers[rx_sel];
                     y_coords <= registers[ry_sel];
                     sprite_height <= op_nibble;
-                    //registers[15] = 0;
-                    //display_ptr = video_index;
-                    //for (repeat_ctr = 0; repeat_ctr < op_nibble; repeat_ctr = repeat_ctr + 1) begin
-                    //    video_memory[display_ptr +: 8] = read_buffer[repeat_ctr];
-                    //    if ((video_memory[video_index +: 8] & read_buffer[repeat_ctr]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //video_memory[display_ptr +: 8] = read_buffer[repeat_ctr];
-                    //if ((video_memory[video_index +: 8] & read_buffer[repeat_ctr]) > 0)
-                    //    registers[15] <= 1;
-                    //if (op_nibble >= 0) begin
-                    //    video_memory[video_index +: 8] <= read_buffer[0];
-                    //    if ((video_memory[video_index +: 8] & read_buffer[0]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 1) begin
-                    //    video_memory[video_index + screen_width * 1 +: 8] <= read_buffer[1];
-                    //    if ((video_memory[video_index + screen_width * 1 +: 8] & read_buffer[1]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 2) begin
-                    //    video_memory[video_index + screen_width * 2 +: 8] <= read_buffer[2];
-                    //    if ((video_memory[video_index + screen_width * 2 +: 8] & read_buffer[2]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 3) begin
-                    //    video_memory[video_index + screen_width * 3 +: 8] <= read_buffer[3];
-                    //    if ((video_memory[video_index + screen_width * 3 +: 8] & read_buffer[3]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 4) begin
-                    //    video_memory[video_index + screen_width * 4 +: 8] <= read_buffer[4];
-                    //    if ((video_memory[video_index + screen_width * 4 +: 8] & read_buffer[4]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 5) begin
-                    //    video_memory[video_index + screen_width * 5 +: 8] <= read_buffer[5];
-                    //    if ((video_memory[video_index + screen_width * 5 +: 8] & read_buffer[5]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 6) begin
-                    //    video_memory[video_index + screen_width * 6 +: 8] <= read_buffer[6];
-                    //    if ((video_memory[video_index + screen_width * 6 +: 8] & read_buffer[6]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 7) begin
-                    //    video_memory[video_index + screen_width * 7 +: 8] <= read_buffer[7];
-                    //    if ((video_memory[video_index + screen_width * 7 +: 8] & read_buffer[7]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 8) begin
-                    //    video_memory[video_index + screen_width * 8 +: 8] <= read_buffer[8];
-                    //    if ((video_memory[video_index + screen_width * 8 +: 8] & read_buffer[8]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 9) begin
-                    //    video_memory[video_index + screen_width * 9 +: 8] <= read_buffer[9];
-                    //    if ((video_memory[video_index + screen_width * 9 +: 8] & read_buffer[9]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 10) begin
-                    //    video_memory[video_index + screen_width * 10 +: 8] <= read_buffer[10];
-                    //    if ((video_memory[video_index + screen_width * 10 +: 8] & read_buffer[10]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 11) begin
-                    //    video_memory[video_index + screen_width * 11 +: 8] <= read_buffer[11];
-                    //    if ((video_memory[video_index + screen_width * 11 +: 8] & read_buffer[11]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 12) begin
-                    //    video_memory[video_index + screen_width * 12 +: 8] <= read_buffer[12];
-                    //    if ((video_memory[video_index + screen_width * 12 +: 8] & read_buffer[12]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 13) begin
-                    //    video_memory[video_index + screen_width * 13 +: 8] <= read_buffer[13];
-                    //    if ((video_memory[video_index + screen_width * 13 +: 8] & read_buffer[13]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 14) begin
-                    //    video_memory[video_index + screen_width * 14 +: 8] <= read_buffer[14];
-                    //    if ((video_memory[video_index + screen_width * 14 +: 8] & read_buffer[14]) > 0)
-                    //        registers[15] <= 1;
-                    //end
-                    //if (op_nibble >= 15) begin
-                    //    video_memory[video_index + screen_width * 15 +: 8] <= read_buffer[15];
-                    //    if ((video_memory[video_index + screen_width * 15 +: 8] & read_buffer[15]) > 0)
-                    //        registers[15] <= 1;
-                    //end
                     program_counter <= program_counter + 2;
                 end
                 14: begin   // read key_code
@@ -811,17 +719,11 @@ module Chip8(
                                         // mem[i_reg] = hundreds
                                         // mem[i_reg + 1] = tens
                                         // mem[i_reg + 2] = ones
-                            write_enable = 1;   // possible location of bug?
-                                                // not sure of reasoning to
-                                                // have as blocking in the first
-                                                // place. Maybe from early
-                                                // memory iterations.
+                            write_enable <= 1;
                             write_count <= 2;
-                            // tomfoolery because of write delay
-                            // BUG still one off. Any adjusting breaks entirely.
-                            write_buffer[2] <= registers[rx_sel] / 100;
-                            write_buffer[0] <= (registers[rx_sel] % 100) / 10;
-                            write_buffer[1] <= registers[rx_sel] % 10;
+                            write_buffer[0] <= registers[rx_sel] / 100;
+                            write_buffer[1] <= (registers[rx_sel] % 100) / 10;
+                            write_buffer[2] <= registers[rx_sel] % 10;
                             program_counter <= program_counter + 2;
 
                             // NOTE POS-BUG Documentation is unclear if i_reg
@@ -830,15 +732,11 @@ module Chip8(
                         end
                         8'h55: begin    // write registers r0 - rX to memory
                                         // starting at i_reg
-                            write_enable = 1;   // possible location of bug?
-                                                // not sure of reasoning to
-                                                // have as blocking in the first
-                                                // place. Maybe from early
-                                                // memory iterations.
+                            write_enable <= 1;
                             write_count <= rx_sel;
                             // increment i_reg by number of bytes written
                             i_reg <= i_reg + rx_sel + 1;
-                            // one off because of write delay
+                            // POS-FIXED needs to be verified
                             // BUG most writes still write erroneous data, this
                             // is the only setup that allows ROMs to be loaded
                             // correctly

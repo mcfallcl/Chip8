@@ -527,7 +527,7 @@ module Chip8(
 
             // Blocking to keep new opcodes from writting random data.
             // NOTE look into changing when memory handling is changed
-            write_enable <= 0;
+            write_enable = 0;
             if (audio_set)
                 audio_set <= 0;
 

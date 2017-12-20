@@ -3,14 +3,13 @@
  * Switches from the FPGA board are used as the inputs, and a VGA is used as
  * the display
  *
- * TODO Fix memory writes. Currently memory writes completely corrupt the RAM
- *      from the start address to that + 15.
- * TODO Use smarter buffers for writing memory.
  * TODO Fix collision detection. rF needs to properly set when pixels flip from
  *      HIGH to LOW
  * TODO Investigate why RNG isn't working correctly, and how to properly
  *      generate a random number.
+ *      TRY LFSR for random number.
  * TODO Allow video writes to wrap around on screen.
+ *      POS_FIX needs testing
  * TODO Ensure delays and audio work as they should.
  * TODO Display program counter and currenty opcode on 7-segs.
  * TODO Use RGB LEDs to indicate system state state.
@@ -174,8 +173,6 @@ module Chip8(
     // stores memory data from i_reg - i_reg+15
     wire [7:0] read_buffer [0:15];
     // stores data to be written to main memory from i_reg - i_reg+15
-    // CRITICAL BUG - memory writes are offset. Needs further investigation.
-    // possible solution is create a smarter buffer for writing.
     reg [7:0] write_buffer [0:15];
     // enables writing to memory
     reg write_enable = 0;
@@ -232,12 +229,6 @@ module Chip8(
     // disasterous. Moved outside of main memory for easier handling
     reg [11:0] call_stack [0:31];
     reg [4:0] stack_pointer = 0;
-
-    // Leaving this here as a reminder of why rolling your own memory probably
-    // isn't worth it. Using this instead of the RAM IP caused a 12 hour
-    // synthesize, made worse because I was accessing up to 32 arbitrary indexes
-    // simultaneously.
-    //reg [7:0] main_memory [0:12'hFFF];
 
     // When register x and register y are equal, cmp_out is HIGH. Else
     // it is LOW. cmp_outbar is always the opposite of cmp_out.
@@ -360,8 +351,8 @@ module Chip8(
 
     // flag indicating if rom is being loaded
     reg loading = 0;
-    // used to ensure ROMS are continuously loaded, which may corrupt data in
-    // RAM
+    // used to ensure ROMS are not continuously loaded, which would corrupt data
+    // in RAM
     reg start_loading = 0;  
     reg old_loading = 0;
 
@@ -373,7 +364,7 @@ module Chip8(
     // stores sprite height, otherwise value from next opcode is used.
     reg [3:0] sprite_height = 0;
     always @(posedge SYS_CLK) begin
-        // clk frequency must at least 16 times faster for memory to be able
+        // clk frequency must at least 32 times faster for memory to be able
         // to do its thing. More added just in case.
         if (clk_ctr < 63)
             clk_ctr <= clk_ctr + 1;
@@ -466,9 +457,7 @@ module Chip8(
             write_enable <= 1;
             rom_index <= 0;
             vid_clear <= 1;
-            // BUG logically should be 0, to write one byte at a time, but RAM
-            // doesn't load into correct positions unless this is 15.
-            write_count <= 15;
+            write_count <= 0;
 
             write_buffer[0] <= 0;
             write_buffer[1] <= 0;
@@ -736,10 +725,6 @@ module Chip8(
                             write_count <= rx_sel;
                             // increment i_reg by number of bytes written
                             i_reg <= i_reg + rx_sel + 1;
-                            // POS-FIXED needs to be verified
-                            // BUG most writes still write erroneous data, this
-                            // is the only setup that allows ROMs to be loaded
-                            // correctly
                             if (rx_sel >= 0) write_buffer[0] <= registers[0];
                             if (rx_sel >= 1) write_buffer[1] <= registers[1];
                             if (rx_sel >= 2) write_buffer[2] <= registers[2];
